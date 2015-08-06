@@ -1,0 +1,21 @@
+// +build linux
+
+package blugo
+
+const (
+	BTPROTO_L2CAP = iota
+	BTPROTO_HCI
+	BTPROTO_SCO
+	BTPROTO_RFCOMM
+	BTPROTO_BNEP
+	BTPROTO_CMTP
+	BTPROTO_HIDP
+	BTPROTO_AVDTP
+)
+
+const (
+	SOL_HCI    = 0
+	SOL_L2CAP  = 6
+	SOL_SCO    = 17
+	SOL_RFCOMM = 18
+)
