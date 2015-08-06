@@ -93,7 +93,7 @@ func (self HciBus) String() string {
 type HciType uint8
 
 const (
-	HCI_BREDR = iota
+	HCI_BREDR HciType = iota
 	HCI_AMP
 )
 
