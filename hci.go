@@ -1,3 +1,5 @@
+// bluetooth library in pure golang
+
 package blugo
 
 import (
