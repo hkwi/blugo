@@ -123,8 +123,6 @@ type HciInquiryReq struct {
 	Pad_cgo_0 [1]byte
 }
 
-type _Socklen uint32
-
 const (
 	SizeofSockaddrHci = 0x6
 	SizeofHciFilter   = 0x10

@@ -5,7 +5,7 @@
 package blugo
 
 // #cgo pkg-config: bluez
-// #include <sys/socket.h>
+// #include <sys/select.h>
 // #include <sys/ioctl.h>
 // #include <bluetooth/bluetooth.h>
 // #include <bluetooth/hci.h>
@@ -41,6 +41,7 @@ const (
 
 type SockaddrHci C.struct_sockaddr_hci
 
+// OpCode is little endian
 type HciFilter C.struct_hci_filter
 
 type HciDevStats C.struct_hci_dev_stats
@@ -60,8 +61,6 @@ type HciConnInfoReq C.struct_hci_conn_info_req
 type HciAuthInfoReq C.struct_hci_auth_info_req
 
 type HciInquiryReq C.struct_hci_inquiry_req
-
-type _Socklen C.socklen_t
 
 const (
 	SizeofSockaddrHci = C.sizeof_struct_sockaddr_hci

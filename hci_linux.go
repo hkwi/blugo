@@ -5,10 +5,8 @@
 package blugo
 
 import (
-	"encoding/binary"
 	"net"
 	"strings"
-	"unsafe"
 )
 
 type Bdaddr [6]byte
@@ -32,29 +30,6 @@ func ParseMAC(s string) (Bdaddr, error) {
 		self[0], self[1], self[2], self[3], self[4], self[5] = self[5], self[4], self[3], self[2], self[1], self[0]
 	}
 	return self, err
-}
-
-type OpCode uint16
-
-func (self OpCode) num() uint16 {
-	return binary.LittleEndian.Uint16((*[2]byte)(unsafe.Pointer(&self))[:])
-}
-
-func (self OpCode) Ogf() uint16 {
-	return self.num() >> 10
-}
-
-func (self OpCode) Ocf() uint16 {
-	return self.num() & 0x03ff
-}
-
-func MakeOpCode(ogf, ocf uint16) OpCode {
-	var self uint16
-	binary.LittleEndian.PutUint16(
-		(*[2]byte)(unsafe.Pointer(&self))[:],
-		uint16((ogf<<10)|(ocf&0x03ff)),
-	)
-	return OpCode(self)
 }
 
 type HciBus uint8
