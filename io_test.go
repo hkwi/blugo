@@ -23,9 +23,7 @@ func TestHoge(t *testing.T) {
 				} else {
 					for _, con := range conns {
 						t.Logf("connection %v", con)
-						if ret, err := devio.Request(HCI_Read_RSSI, Parameters{
-							U16(con.Handle),
-						}); err != nil {
+						if ret, err := devio.Request(HCI_Read_RSSI, U16(con.Handle)); err != nil {
 							t.Error(err)
 						} else {
 							t.Logf("rssi=%v", ret[2])

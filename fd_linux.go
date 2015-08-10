@@ -147,12 +147,12 @@ func SetsockoptHciFilter(fd, level, opt int, filter *HciFilter) error {
 	)
 }
 
-func (self HciDev) Request(opcode OpCode, params Parameters) (Parameters, error) {
+func (self HciDev) Request(opcode OpCode, params ...Parameter) (Parameters, error) {
 	req := make([]byte, 4)
 	req[0] = HCI_COMMAND_PKT
 	binary.LittleEndian.PutUint16(req[1:], uint16(opcode))
 
-	if pbuf, err := params.MarshalBinary(); err != nil {
+	if pbuf, err := Parameters(params).MarshalBinary(); err != nil {
 		return nil, err
 	} else {
 		req[3] = uint8(len(pbuf))
