@@ -227,7 +227,7 @@ func Parse(buf []byte) (Pkt, int) {
 	}
 }
 
-type Parameter interface {}
+type Parameter interface{}
 
 type Parameters []Parameter
 
