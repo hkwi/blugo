@@ -66,9 +66,9 @@ func (self OpCode) Response(data []byte) (Parameters, error) {
 			return nil, fmt.Errorf("too short")
 		}
 		return Parameters{
-			U8(data[0]),
-			U16(binary.LittleEndian.Uint16(data[1:])),
-			S8(data[3]),
+			data[0],
+			binary.LittleEndian.Uint16(data[1:]),
+			int8(data[3]),
 		}, nil
 	// XXX: add more opcodes
 	default:

@@ -227,42 +227,44 @@ func Parse(buf []byte) (Pkt, int) {
 	}
 }
 
-type Parameter interface {
-	MarshalBinary() ([]byte, error)
-}
+type Parameter interface {}
 
 type Parameters []Parameter
 
 func (self Parameters) MarshalBinary() ([]byte, error) {
+	var buf [8]byte
 	var ret []byte
 	for _, p := range []Parameter(self) {
-		if b, err := p.MarshalBinary(); err != nil {
-			return nil, err
-		} else {
-			ret = append(ret, b...)
+		switch v := p.(type) {
+		case int8:
+			ret = append(ret, uint8(v))
+		case uint8:
+			ret = append(ret, v)
+		case int16:
+			binary.LittleEndian.PutUint16(buf[:], uint16(v))
+			ret = append(ret, buf[:2]...)
+		case uint16:
+			binary.LittleEndian.PutUint16(buf[:], v)
+			ret = append(ret, buf[:2]...)
+		case int32:
+			binary.LittleEndian.PutUint32(buf[:], uint32(v))
+			ret = append(ret, buf[:4]...)
+		case uint32:
+			binary.LittleEndian.PutUint32(buf[:], v)
+			ret = append(ret, buf[:4]...)
+		case int64:
+			binary.LittleEndian.PutUint64(buf[:], uint64(v))
+			ret = append(ret, buf[:8]...)
+		case uint64:
+			binary.LittleEndian.PutUint64(buf[:], v)
+			ret = append(ret, buf[:8]...)
+		case []byte:
+			ret = append(ret, v...)
+		default:
+			return nil, fmt.Errorf("unknown type")
 		}
 	}
 	return ret, nil
-}
-
-type U8 uint8
-
-func (self U8) MarshalBinary() ([]byte, error) {
-	return []byte{uint8(self)}, nil
-}
-
-type S8 int8
-
-func (self S8) MarshalBinary() ([]byte, error) {
-	return []byte{uint8(self)}, nil
-}
-
-type U16 uint16
-
-func (self U16) MarshalBinary() ([]byte, error) {
-	var ret [2]byte
-	binary.LittleEndian.PutUint16(ret[:], uint16(self))
-	return ret[:], nil
 }
 
 type HciError uint8
